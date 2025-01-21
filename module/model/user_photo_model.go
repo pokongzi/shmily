@@ -3,6 +3,7 @@ package model
 import (
     "gorm.io/gorm"
     "module/entity"
+    "common/mysql"
 )
 
 // UserPhotoModel handles database operations for UserPhoto
@@ -33,8 +34,8 @@ func (m *UserPhotoModel) DeleteUserPhoto(id int64) error {
 }
 
 // NewUserPhotoModel creates a new instance of UserPhotoModel
-func NewUserPhotoModel(db *gorm.DB) *UserPhotoModel {
+func NewUserPhotoModel() *UserPhotoModel {
     return &UserPhotoModel{
-        DB: db,
+        DB: mysql.db,
     }
 } 
