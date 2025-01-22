@@ -3,6 +3,8 @@ package main
 import (
 	"fmt"
 	"net/http"
+	"shmily/common/mysql"
+	"shmily/common/redis"
 	"strings"
 
 	"github.com/gocraft/web"
@@ -22,7 +24,8 @@ func (c *Context) SayHello(rw web.ResponseWriter, req *web.Request) {
 }
 
 func main() {
-
+	mysql.Init()
+	redis.Init()
 	router := web.New(Context{}). // Create your router
 					Middleware(web.LoggerMiddleware).    // Use some included middleware
 					Middleware(web.ShowErrorsMiddleware) // ...

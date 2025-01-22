@@ -1,16 +1,11 @@
 package redis
 
-type Config struct {
-	Host     string
-	Port     int
-	Password string
-	Db       int
-	// 是否启动redis
-	Enabled uint
-	// Maximum number of socket connections.
-	// Default is 10 connections per every CPU as reported by runtime.NumCPU.
-	PoolSize int `mapstructure:"pool_size"`
-	// Minimum number of idle connections which is useful when establishing
-	// new connection is slow.
-	MinIdleConns int `mapstructure:"minIdle_Conns"`
+// RedisConfig 结构体表示 Redis 配置
+type RedisConfig struct {
+	Host        string `ini:"host"`
+	Port        int    `ini:"port"`
+	Enabled     bool   `ini:"enabled"`
+	PoolSize    int    `ini:"pool_size"`
+	RequirePass string `ini:"requirepass"`
+	MaxClients  int    `ini:"maxclients"`
 }
