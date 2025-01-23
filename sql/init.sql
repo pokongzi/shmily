@@ -3,8 +3,8 @@ CREATE TABLE IF NOT EXISTS `user` (
     `uid` CHAR(20) NOT NULL DEFAULT '用户id' COMMENT 'uid',
     `name` VARCHAR(30) NOT NULL DEFAULT '' COMMENT '姓名',
     `birthday` VARCHAR(30) NOT NULL DEFAULT '' COMMENT '生日',
+    `birth_year` INT NOT NULL DEFAULT 0 COMMENT '出生年份',
     `phone` VARCHAR(30) NOT NULL DEFAULT '' COMMENT '手机号',
-    `birthday_type` int NOT NULL DEFAULT 0 COMMENT '类型1阳历2阴历',
     `icon` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '头像地址',
     `sex` int NOT NULL DEFAULT 0 COMMENT '性别 1男2女',
     `city` int NOT NULL DEFAULT 0 COMMENT '城市id',
@@ -87,7 +87,6 @@ CREATE TABLE IF NOT EXISTS `relation` (
 
 CREATE TABLE IF NOT EXISTS `user_oauth` (
     `id` BIGINT NOT NULL auto_increment PRIMARY KEY,
-    `uid` CHAR(20) NOT NULL COMMENT '关联的用户ID',
     `platform` TINYINT NOT NULL COMMENT '平台类型 1:微信 2:抖音 3:QQ等',
     `open_id` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '平台openid',
     `union_id` VARCHAR(64) NOT NULL DEFAULT '' COMMENT '平台unionid',
@@ -106,6 +105,18 @@ CREATE TABLE IF NOT EXISTS `user_oauth` (
     UNIQUE INDEX `idx_platform_openid` (`platform`, `open_id`),
     INDEX `idx_union_id` (`union_id`)
 ) COMMENT '第三方平台用户信息表';
+
+CREATE TABLE IF NOT EXISTS `user_oauth_bind` (
+    `id` BIGINT NOT NULL auto_increment PRIMARY KEY,
+    `user_id` BIGINT NOT NULL COMMENT '用户ID',
+    `oauth_id` BIGINT NOT NULL COMMENT '第三方平台用户ID',
+    `status` TINYINT NOT NULL DEFAULT 1 COMMENT '状态 1:正常 0:解绑',
+    `create_time` int64 NOT NULL DEFAULT 0 COMMENT '创建时间',
+    `update_time` int64 NOT NULL DEFAULT 0 COMMENT '更新时间',
+    INDEX `idx_user_id` (`user_id`),
+    INDEX `idx_oauth_id` (`oauth_id`),
+    UNIQUE INDEX `idx_user_oauth` (`user_id`, `oauth_id`)
+) COMMENT '用户第三方平台绑定表';
 
 
 
