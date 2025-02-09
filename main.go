@@ -1,36 +1,20 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"shmily/common/mysql"
 	"shmily/common/redis"
-	"strings"
-
-	"github.com/gocraft/web"
+	"shmily/handler"
 )
 
-type Context struct {
-	HelloCount int
-}
-
-func (c *Context) SetHelloCount(rw web.ResponseWriter, req *web.Request, next web.NextMiddlewareFunc) {
-	c.HelloCount = 3
-	next(rw, req)
-}
-
-func (c *Context) SayHello(rw web.ResponseWriter, req *web.Request) {
-	fmt.Fprint(rw, strings.Repeat("Hello ", c.HelloCount), "World!")
-}
-
 func main() {
+	// 初始化数据库连接
 	mysql.Init()
 	redis.Init()
-	router := web.New(Context{}). // Create your router
-					Middleware(web.LoggerMiddleware).    // Use some included middleware
-					Middleware(web.ShowErrorsMiddleware) // ...
 
-	router.Get("/", (*Context).SayHello)
-	router.Get("/", (*Context).SayHello)
-	http.ListenAndServe("localhost:3000", router) // Start the server!
+	// 创建路由
+	router := handler.NewRouter()
+
+	// 启动服务器
+	http.ListenAndServe("localhost:3000", router)
 }

@@ -8,6 +8,10 @@ import (
 	"gorm.io/gorm"
 )
 
+func test() {
+
+}
+
 // 用户第三方登录
 func ThirdPartyLogin(platform int8, code string) (*entity.User, error) {
 	// 1. 获取平台用户信息
